@@ -6,7 +6,7 @@
     <string name="guess_superpower">Guess the Super Power</string>
     <string name="guess_onething">Guess the One Thing</string>
     <string name="title_of_choice">Quiz Type</string>
-    <string name="results">%1$d guesses, %2$.01f%% correct</string>
+    <string name="results">%1$d guesses, %2$.02f%% correct</string>
     <string name="incorrect_answer">Incorrect!</string>
     <string name="reset_quiz">Reset Quiz</string>
     <string name="restarting_quiz">Quiz will restart with your new settings</string>

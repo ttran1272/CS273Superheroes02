@@ -284,7 +284,7 @@ public class QuizActivity extends AppCompatActivity {
                 // Show an AlertDialog with the statistics and an option to reset quiz
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getString(R.string.results, mTotalGuesses,
-                        (double) mCorrectGuesses / mTotalGuesses));
+                        (double) mCorrectGuesses * 100 / mTotalGuesses ));
                 builder.setPositiveButton(getString(R.string.reset_quiz),
                         new DialogInterface.OnClickListener() {
                             @Override
