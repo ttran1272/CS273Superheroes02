@@ -156,7 +156,7 @@ public class QuizActivity extends AppCompatActivity {
     private void loadNextGuess() {
 
         // Initialize the mCorrectSuperhero by removing the item at position 0 in the mQuizSuperheroesList
-        mCorrectSuperhero =  mQuizSuperheroesList.remove(0);
+        mCorrectSuperhero = mQuizSuperheroesList.remove(0);
 
         // Clear the mAnswerTextView so that id doesn't show text from the previous question
         mAnswerTextView.setText("");
@@ -180,7 +180,7 @@ public class QuizActivity extends AppCompatActivity {
             mSuperheroImageView.setImageDrawable(image);
 
         } catch (IOException e) {
-            Log.e(TAG, "Error loading image: " + mCorrectSuperhero.getFileName(), e );
+            Log.e(TAG, "Error loading image: " + mCorrectSuperhero.getFileName(), e);
         }
 
         // Shuffle the order of all the superheroes
@@ -189,31 +189,54 @@ public class QuizActivity extends AppCompatActivity {
         }
         while (mAllSuperheroesList.subList(0, CHOICES).contains(mCorrectSuperhero));
 
-        // Loop through all 4 buttons, enable them all and set them to the first 4 superheroes in the all superheroes list
-        for (int i=0; i < CHOICES; i++){
-            mButtons[i].setEnabled(true);
-            mButtons[i].setText(mAllSuperheroesList.get(i).getName());
-        }
+        TextView quizGuessInfo = (TextView) findViewById(R.id.guessQuizTextView);
 
         // After the loop, randomly replace one of the 4 buttons with the name of the correct information
-        // based on the type of quiz
-        if (superheroQuiz)
-            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getName());
-        else if (superpowerQuiz)
-            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getSuperpower());
-        else
-            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getOneThing());
+        // based on the type of quiz and update the quiz information
+        if (superheroQuiz) {
+            // Update the type of quiz
+            quizGuessInfo.setText(R.string.guess_superhero);
 
+            // Loop through all 4 buttons, enable them all and set them to the first 4 superheroes in the all superheroes list
+            for (int i = 0; i < CHOICES; i++) {
+                mButtons[i].setEnabled(true);
+                mButtons[i].setText(mAllSuperheroesList.get(i).getName());
+            }
+            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getName());
+
+        } else if (superpowerQuiz) {
+            // Update the type of quiz
+            quizGuessInfo.setText(R.string.guess_superpower);
+
+            // Loop through all 4 buttons, enable them all and set them to the first 4 superheroes in the all superheroes list
+            for (int i = 0; i < CHOICES; i++) {
+                mButtons[i].setEnabled(true);
+                mButtons[i].setText(mAllSuperheroesList.get(i).getSuperpower());
+            }
+            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getSuperpower());
+
+        } else {
+            // Update the type of quiz
+            quizGuessInfo.setText(R.string.guess_onething);
+
+            // Loop through all 4 buttons, enable them all and set them to the first 4 superheroes in the all superheroes list
+            for (int i = 0; i < CHOICES; i++) {
+                mButtons[i].setEnabled(true);
+                mButtons[i].setText(mAllSuperheroesList.get(i).getOneThing());
+            }
+            mButtons[rng.nextInt(CHOICES)].setText(mCorrectSuperhero.getOneThing());
+        }
     }
 
 
-    /**
-     * Handles the click event of one of the 4 buttons indicating the guess of a superhero's name
-     * to match the picture image displayed. If the guess is correct, the superhero's name (in GREEN)
-     * will be shown, followed by a slight delay of 2 seconds, then the next superhero will be loaded.
-     * Otherwise, the word "Incorrect Guess"  will be shown in RED and the button will be disabled.
-     * @param v
-     */
+        /**
+         * Handles the click event of one of the 4 buttons indicating the guess of a superhero's name
+         * to match the picture image displayed. If the guess is correct, the superhero's name (in GREEN)
+         * will be shown, followed by a slight delay of 2 seconds, then the next superhero will be loaded.
+         * Otherwise, the word "Incorrect Guess"  will be shown in RED and the button will be disabled.
+         * @param v
+         */
+
     public void makeGuess(View v) {
 
         // Downcast the View v into a Button (since it's one of the 4 buttons)
@@ -276,8 +299,7 @@ public class QuizActivity extends AppCompatActivity {
         }
         // Else, the answer is incorrect, so display "Incorrect Guess!" in red
         // and disable jus the incorrect button
-        else
-        {
+        else {
             clickedButton.setEnabled(false);
             mAnswerTextView.setText(getString(R.string.incorrect_answer));
             mAnswerTextView.setTextColor(ContextCompat.getColor(this, R.color.incorrect_answer));
@@ -309,13 +331,11 @@ public class QuizActivity extends AppCompatActivity {
             superheroQuiz = true;
             superpowerQuiz = false;
             guessOneThingQuiz = false;
-        }
-        else if (mTypeOfQuiz.equals("Guess Superpower")) {
+        } else if (mTypeOfQuiz.equals("Guess Superpower")) {
             superpowerQuiz = true;
             superheroQuiz = false;
             guessOneThingQuiz = false;
-        }
-        else {
+        } else {
             guessOneThingQuiz = true;
             superheroQuiz = false;
             superpowerQuiz = false;
@@ -324,22 +344,19 @@ public class QuizActivity extends AppCompatActivity {
 
 
 
+
     // Create the mListener to get the selected type of quiz
     SharedPreferences.OnSharedPreferenceChangeListener mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key == QUIZ_TYPE){
-                mTypeOfQuiz = sharedPreferences.getString(key, "Superhero Name");
-                Log.e(TAG, "Type of Quiz = " + mTypeOfQuiz);
 
-                updateTypeOfQuiz();
-                resetQuiz();
+            mTypeOfQuiz = sharedPreferences.getString(key, "Superhero Name");
+            Log.e(TAG, "Type of Quiz = " + mTypeOfQuiz);
 
-                Toast.makeText(QuizActivity.this, R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
-            }
-            else
-                Toast.makeText(QuizActivity.this, "Wrong preferences key", Toast.LENGTH_SHORT).show();
+            updateTypeOfQuiz();
+            resetQuiz();
 
+            Toast.makeText(QuizActivity.this, R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
 
         }
     };

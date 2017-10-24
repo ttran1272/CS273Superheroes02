@@ -37,7 +37,7 @@ public class JSONLoader {
 
         try {
             JSONObject jsonRootObject = new JSONObject(json);
-            JSONArray allSuperheroesJSON = jsonRootObject.getJSONArray("cs273superheroes");
+            JSONArray allSuperheroesJSON = jsonRootObject.getJSONArray("CS273Superheroes");
 
             int length = allSuperheroesJSON.length();
 
